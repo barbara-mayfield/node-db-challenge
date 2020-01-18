@@ -1,12 +1,9 @@
 const express = require("express")
 const projectModel = require("./project-model")
-const taskRouter = require("../tasks/task-router")
-const resourceRouter = require("../resources/resource-router")
+const taskModel = require("./task-model")
+const resourceModel = require("./resource-model")
 
 const router = express.Router()
-
-router.use('/tasks', taskRouter)
-router.use('/resources/:id', resourceRouter)
 
 router.get('/', async (req, res, next) => {
   try{
@@ -34,6 +31,44 @@ router.post("/", async (req, res, next) => {
     } catch(err) {
       next(err)
     }
-  })
+})
+
+router.get('/:id/tasks', async(req, res, next) => {
+    try{
+        const { id } = req.params
+        const tasks = await taskModel.getTasks(id)
+        res.json(tasks);
+      } catch(err) {
+        next(err)
+      };
+});
+  
+router.post("/tasks", async (req, res, next) => {
+    try {
+        const newTask = await taskModel.addTask(req.body)
+        res.status(201).json(newTask)
+    } catch(err) {
+        next(err)
+      }
+    })
+
+router.get('/:id/resources', async(req, res, next) => {
+    try{
+        const { id } = req.params
+        const resources = await resourceModel.getResources(id)
+        res.json(resources);
+      } catch(err) {
+        next(err)
+      };
+});
+      
+router.post("/resources", async (req, res, next) => {
+    try {
+        const newResource = await resourceModel.addResource(req.body)
+        res.status(201).json(newResource)
+    } catch(err) {
+        next(err)
+    }
+})
 
 module.exports = router;
