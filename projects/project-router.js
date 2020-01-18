@@ -43,8 +43,9 @@ router.get('/:id/tasks', async(req, res, next) => {
       };
 });
   
-router.post("/tasks", async (req, res, next) => {
+router.post("/:id/tasks", async (req, res, next) => {
     try {
+        const { id } = req.params
         const newTask = await taskModel.addTask(req.body)
         res.status(201).json(newTask)
     } catch(err) {
@@ -62,8 +63,9 @@ router.get('/:id/resources', async(req, res, next) => {
       };
 });
       
-router.post("/resources", async (req, res, next) => {
+router.post("/:id/resources", async (req, res, next) => {
     try {
+        const { id } = req.params
         const newResource = await resourceModel.addResource(req.body)
         res.status(201).json(newResource)
     } catch(err) {
