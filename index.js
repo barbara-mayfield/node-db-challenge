@@ -1,6 +1,6 @@
 const express = require("express")
 const helmet = require("helmet")
-const projectRouter = require("./project/project-router")
+const projectRouter = require("./projects/project-router")
 
 const server = express()
 const port = process.env.PORT || 8000
