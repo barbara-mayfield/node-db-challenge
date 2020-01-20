@@ -5,6 +5,11 @@ exports.up = async function(knex) {
         table.string("description")
         table.boolean("completed").defaultTo(false).notNullable()
     })
+
+    await knex.schema.createTable("resources", (table) => {
+        table.increments("id")
+        table.string("resource").notNull()
+    })
   
     await knex.schema.createTable("tasks", (table) => {
         table.increments("id")
@@ -18,38 +23,27 @@ exports.up = async function(knex) {
         .onDelete("CASCADE")
         .onUpdate("CASCADE")  
     })
-  
-    await knex.schema.createTable("resources", (table) => {
-        table.increments("id")
-        table.string("resource").notNull()
-  
-        table.integer("project_id")
-        .notNullable()
-        .references("id")
-        .inTable("projects")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE")
-    })
 
-    await knex.schema.createTable("projects_tasks", (table) => {
+    await knex.schema.createTable("projects_resources", (table) => {
         table.integer("project_id")
             .notNullable()
             .references("id")
             .inTable("projects")
             .onDelete("CASCADE")
             .onUpdate("CASCADE")
-        table.integer("task_id")
+        table.integer("resource_id")
             .notNullable()
             .references("id")
-            .inTable("tasks")
+            .inTable("resources")
             .onDelete("CASCADE")
             .onUpdate("CASCADE")
+        table.primary(["project_id", "resource_id"])
     })
 }
   
 exports.down = async function(knex) {
-    await knex.schema.dropTableIfExists("projects_tasks")
-    await knex.schema.dropTableIfExists("resources")
+    await knex.schema.dropTableIfExists("projects_resources")
     await knex.schema.dropTableIfExists("tasks")
+    await knex.schema.dropTableIfExists("resources")
     await knex.schema.dropTableIfExists("projects") 
 };

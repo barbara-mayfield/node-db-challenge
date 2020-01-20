@@ -64,13 +64,12 @@ router.get('/:id/resources', async(req, res, next) => {
 });
       
 router.post("/:id/resources", async (req, res, next) => {
-    try {
-        const { id } = req.params
-        const newResource = await resourceModel.addResource(req.body)
-        res.status(201).json(newResource)
-    } catch(err) {
-        next(err)
-    }
+  try {
+    const newResource = await resourceModel.addResource(req.body)
+    res.status(201).json(newResource)
+  } catch(err) {
+    next(err)
+  }
 })
 
 module.exports = router;

@@ -6,7 +6,7 @@ function getResources(){
 
 async function addResource(data) {
     const [id] = await db("resources").insert(data)
-    return db("resources").where({ id }).first()
+	return db("resources").where({ id }).first()
 }
 
 module.exports = {
